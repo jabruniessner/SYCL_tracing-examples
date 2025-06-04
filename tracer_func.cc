@@ -1,9 +1,12 @@
 #include "hipSYCL/sycl/tracer_utils.hpp"
+#include <chrono>
 #include <stdio.h>
 #include <sycl/sycl.hpp>
 
 using tracer_funcs = Tracer_utils::tracer_funcs;
 using start_end = Tracer_utils::start_end;
+
+// using time_point = Tracer_utils::time_point;
 
 void tracer_func_submit(start_end) {
   std::cout << "Tracer function submit called" << std::endl;
@@ -53,5 +56,6 @@ void tracer_func_initializer(tracer_funcs &tracer_state) {
   tracer_state.memcpy.push_back(tracer_func_memcpy);
   tracer_state.wait.push_back(tracer_func_wait);
   tracer_state.memset.push_back(tracer_func_memset);
-  tracer_state.finalize.push_back(tracer_func_finalize);
+  tracer_state.finalize.insert(tracer_state.finalize.begin(),
+                               tracer_func_finalize);
 }
