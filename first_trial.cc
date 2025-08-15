@@ -11,11 +11,17 @@
 int main() {
 
   sycl::gpu_selector selector;
-  sycl::queue q{sycl::property_list{sycl::property::queue::in_order{}}};
+  sycl::queue q{selector, sycl::property_list{sycl::property::queue::in_order{}}};
+
+  sycl::cpu_selector selector2;
+  sycl::queue q2{selector2, sycl::property_list{sycl::property::queue::in_order{}}};
 
   auto dev = q.get_device();
+  auto dev2 = q2.get_device();
 
   std::cout << "Running on device: " << dev.get_info<sycl::info::device::name>() << std::endl;
+  std::cout << "Running on device with q2: " << dev2.get_info<sycl::info::device::name>()
+            << std::endl;
 
   // Tracer_utils::initialize_tracer(cool_tracer);
 
