@@ -55,6 +55,13 @@ target_link_libraries(first_trial PRIVATE ${DEBUG_LIBS})
 target_link_options(first_trial PRIVATE ${COMP_OPS})
 target_compile_options(first_trial PRIVATE ${LINK_OPS})
 
+add_executable(benchmarks benchmarks.cc)
+target_compile_definitions(benchmarks PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_link_libraries(benchmarks PRIVATE ${DEBUG_LIBS})
+target_link_options(benchmarks PRIVATE ${COMP_OPS})
+target_compile_options(benchmarks PRIVATE ${LINK_OPS})
+
+
 
 
 
