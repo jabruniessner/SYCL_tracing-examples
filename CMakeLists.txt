@@ -37,14 +37,22 @@ target_compile_definitions(mem_leak PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
 target_link_libraries(mem_leak PRIVATE ${DEBUG_LIBS})
 
 
-add_library(event_leak SHARED event_leak_lib.cc)
-target_compile_definitions(event_leak PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
-target_link_libraries(event_leak PRIVATE ${DEBUG_LIBS})
+#add_library(event_leak SHARED event_leak_lib.cc)
+#target_compile_definitions(event_leak PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+#target_link_libraries(event_leak PRIVATE ${DEBUG_LIBS})
 
 add_library(print_dag SHARED print_dag_nodes.cc)
-target_compile_definitions(event_leak PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
-target_link_libraries(event_leak PRIVATE ${DEBUG_LIBS})
+target_compile_definitions(print_dag PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_link_libraries(print_dag PRIVATE ${DEBUG_LIBS})
 
+
+add_library(empty_lib SHARED empty_lib.cc)
+target_compile_definitions(empty_lib PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_link_libraries(empty_lib PRIVATE ${DEBUG_LIBS})
+
+add_library(checker_lib SHARED empty_lib.cc)
+target_compile_definitions(checker_lib PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_link_libraries(checker_lib PRIVATE ${DEBUG_LIBS})
 
 
 
