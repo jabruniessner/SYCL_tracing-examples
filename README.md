@@ -8,10 +8,12 @@ The following examples are implemented.
 - `checker_lib`: An empty tracer, to check that the call overhead is negligible
 - `libprint_dag.so`: A tracer to visualize the task graph in perfetto.ui. The output format is again the Trace Event Format json format. 
 
+The tracer that output their results into a json format also require the [nlohman/json](https://github.com/nlohmann/json) library. 
+
+
 ## Build instrcution
 
 Building is quite simple. Just make sure the AdaptiveCpp version that has the tracing capabilities is in you path. Building should then be as easy as doing
 
-`cmake $PATH_TO_SRC_DIR`
-`make`
+`cmake $PATH_TO_SRC_DIR && make`
 
