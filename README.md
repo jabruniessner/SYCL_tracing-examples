@@ -1,4 +1,4 @@
-#SYCL tracing example
+# SYCL tracing example
 
 This repository consists of couple examples for tracer that can be used in combination with the SYCL tracing as implemented in acpp
 The following examples are implemented.
@@ -8,7 +8,7 @@ The following examples are implemented.
 - `checker_lib`: An empty tracer, to check that the call overhead is negligible
 - `libprint_dag.so`: A tracer to visualize the task graph in perfetto.ui. The output format is again the Trace Event Format json format. 
 
-##Build instrcution
+## Build instrcution
 
 Building is quite simple. Just make sure the AdaptiveCpp version that has the tracing capabilities is in you path. Building should then be as easy as doing
 
