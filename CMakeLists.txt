@@ -29,11 +29,11 @@ set(COMP_OPS "-no-pie")
 
 
 add_library(tracer_lib SHARED tracer_lib.cc)
-target_compile_definitions(tracer_lib PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(tracer_lib PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(tracer_lib PRIVATE ${DEBUG_LIBS})
 
 add_library(mem_leak SHARED mem_leak_lib.cc)
-target_compile_definitions(mem_leak PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(mem_leak PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(mem_leak PRIVATE ${DEBUG_LIBS})
 
 
@@ -42,38 +42,32 @@ target_link_libraries(mem_leak PRIVATE ${DEBUG_LIBS})
 #target_link_libraries(event_leak PRIVATE ${DEBUG_LIBS})
 
 add_library(print_dag SHARED print_dag_nodes.cc)
-target_compile_definitions(print_dag PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(print_dag PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(print_dag PRIVATE ${DEBUG_LIBS})
 
 
 add_library(empty_lib SHARED empty_lib.cc)
-target_compile_definitions(empty_lib PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(empty_lib PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(empty_lib PRIVATE ${DEBUG_LIBS})
 
 add_library(checker_lib SHARED empty_lib.cc)
-target_compile_definitions(checker_lib PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(checker_lib PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(checker_lib PRIVATE ${DEBUG_LIBS})
 
 
 
 
 add_executable(first_trial first_trial.cc)
-target_compile_definitions(first_trial PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(first_trial PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(first_trial PRIVATE ${DEBUG_LIBS})
 target_link_options(first_trial PRIVATE ${COMP_OPS})
 target_compile_options(first_trial PRIVATE ${LINK_OPS})
 
 add_executable(benchmarks benchmarks.cc)
-target_compile_definitions(benchmarks PRIVATE BOOST_STACKTRCAE_USE_ADDR2LINE)
+target_compile_definitions(benchmarks PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
 target_link_libraries(benchmarks PRIVATE ${DEBUG_LIBS})
 target_link_options(benchmarks PRIVATE ${COMP_OPS})
 target_compile_options(benchmarks PRIVATE ${LINK_OPS})
-
-
-
-
-
-
 
 
 message(STATUS "C++ Compiler: ${CMAKE_CXX_COMPILER}")
