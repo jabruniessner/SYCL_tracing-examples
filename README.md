@@ -1,6 +1,6 @@
 # SYCL tracing example
 
-This repository consists of a couple of examples for tracer that can be used in combination with the SYCL tracing as implemented in [AdaptiveCpp](https://github.com/AdaptiveCpp/AdaptiveCpp)
+This repository consists of a couple of examples for tracer that can be used in combination with the SYCL tracing as implemented in [AdaptiveCpp](https://github.com/AdaptiveCpp/AdaptiveCpp).
 The following examples are implemented.
 
 - `libtracer_lib.so`: A simple time tracer for SYCL API calls. It output is an output file in the Trace Event Format json format, which can be opened and read with perfetto.ui
