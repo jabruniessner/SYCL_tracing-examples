@@ -4,18 +4,15 @@
 #include <iostream>
 #include <sycl/sycl.hpp>
 
-// void cool_tracer(Tracer_utils::tracer_type type,
-//                  Tracer_utils::start_end state) {
-//   std::cout << "Hello World!" << std::endl;
-// }
-
 int main() {
 
-  sycl::gpu_selector selector;
+  constexpr int num_runs = 1000000;
+
+  sycl::cpu_selector selector;
   sycl::queue q{selector,
                 sycl::property_list{sycl::property::queue::in_order{}}};
 
-  sycl::host_selector selector2;
+  sycl::cpu_selector selector2;
   sycl::queue q2{selector2,
                  sycl::property_list{sycl::property::queue::in_order{}}};
 
@@ -39,7 +36,7 @@ int main() {
   // q.wait();
   {
     auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < num_runs; i++)
       q.memcpy(numbers_device, numbers.data(), sizeof(int) * num);
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration<double>(end - start);
@@ -48,7 +45,7 @@ int main() {
 
   {
     auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < num_runs; i++)
       q.memset(numbers_device, 0, sizeof(int) * num);
 
     auto end = std::chrono::high_resolution_clock::now();
@@ -58,7 +55,7 @@ int main() {
 
   {
     auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < num_runs; i++)
       q.wait();
     //  q.wait();
     auto end = std::chrono::high_resolution_clock::now();
@@ -70,10 +67,10 @@ int main() {
   {
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < num_runs; i++) {
       auto e = q.fill(numbers_device, 42, num);
       // e.wait();
-      f = q2.copy(numbers_device, numbers.data(), num, e);
+      f = q.copy(numbers_device, numbers.data(), num, e);
     }
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration<double>(end - start);
@@ -84,7 +81,7 @@ int main() {
   {
     auto start = std::chrono::high_resolution_clock::now();
     // q.wait();
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < num_runs; i++) {
       auto g = q.submit([&](sycl::handler &h) {
         h.depends_on(f);
         h.single_task([=]() {
@@ -109,7 +106,7 @@ int main() {
   {
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (int i = 0; i < 10000; i++)
+    for (int i = 0; i < num_runs; i++)
       q.parallel_for(sycl::range<1>(1),
                      [=](sycl::id<1> I) { const int i = 0; });
 

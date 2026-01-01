@@ -1,5 +1,4 @@
 #include "hipSYCL/sycl/tracer_utils.hpp"
-#include <boost/stacktrace.hpp>
 #include <chrono>
 #include <cstddef>
 #include <cstdlib>
@@ -47,20 +46,22 @@ void start(void *state_ptr, int num, std::string type) {
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  auto duration_micros =
-      std::chrono::duration_cast<std::chrono::microseconds>(start_time - state.start_timer);
+  auto duration_micros = std::chrono::duration_cast<std::chrono::microseconds>(
+      start_time - state.start_timer);
 
   std::string id_string;
   std::stringstream sid_string;
   sid_string << std::this_thread::get_id();
 
-  nlohmann::json a{{"ph", "B"},    {"tid", id_string}, {"pid", "0"},
-                   {"name", type}, {"cat", "cpu_op"},  {"ts", duration_micros.count()},
+  nlohmann::json a{{"ph", "B"},       {"tid", id_string},
+                   {"pid", "0"},      {"name", type},
+                   {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
   ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
 
-  std::cout << "Hello World from the " << type << "_start function!" << std::endl;
+  std::cout << "Hello World from the " << type << "_start function!"
+            << std::endl;
 }
 
 void end(void *state_ptr, int num, std::string type) {
@@ -69,30 +70,42 @@ void end(void *state_ptr, int num, std::string type) {
 
   auto start_time = std::chrono::high_resolution_clock::now();
 
-  auto duration_micros =
-      std::chrono::duration_cast<std::chrono::microseconds>(start_time - state.start_timer);
+  auto duration_micros = std::chrono::duration_cast<std::chrono::microseconds>(
+      start_time - state.start_timer);
 
   std::string id_string;
   std::stringstream sid_string;
   sid_string << std::this_thread::get_id();
 
-  nlohmann::json a{{"ph", "E"},    {"tid", id_string}, {"pid", "0"},
-                   {"name", type}, {"cat", "cpu_op"},  {"ts", duration_micros.count()},
+  nlohmann::json a{{"ph", "E"},       {"tid", id_string},
+                   {"pid", "0"},      {"name", type},
+                   {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
   ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
 
-  // std::cout << "Hello World from the " << type << "_end function!" << std::endl;
+  // std::cout << "Hello World from the " << type << "_end function!" <<
+  // std::endl;
 }
 
-auto submission_start = [](void *usr_state) { start(usr_state, 0, "submission"); };
+auto submission_start = [](void *usr_state) {
+  start(usr_state, 0, "submission");
+};
 auto submission_end = [](void *usr_state, std::size_t evt, std::size_t ptr) {
   end(usr_state, 0, "submission");
 };
-auto single_task_start = [](void *usr_state) { start(usr_state, 1, "single_task"); };
-auto single_task_end = [](void *usr_state) { end(usr_state, 1, "single_task"); };
-auto parallel_for_start = [](void *usr_state) { start(usr_state, 2, "parallel_for"); };
-auto parallel_for_end = [](void *usr_state) { end(usr_state, 2, "parallel_for"); };
+auto single_task_start = [](void *usr_state) {
+  start(usr_state, 1, "single_task");
+};
+auto single_task_end = [](void *usr_state) {
+  end(usr_state, 1, "single_task");
+};
+auto parallel_for_start = [](void *usr_state) {
+  start(usr_state, 2, "parallel_for");
+};
+auto parallel_for_end = [](void *usr_state) {
+  end(usr_state, 2, "parallel_for");
+};
 auto parallel_for_work_group_start = [](void *usr_state) {
   start(usr_state, 3, "parallel_for_work_group");
 };
@@ -100,7 +113,9 @@ auto parallel_for_work_group_end = [](void *usr_state) {
   end(usr_state, 3, "parallel_for_work_group");
 };
 auto wait_start = [](void *usr_state) { start(usr_state, 4, "wait"); };
-auto wait_end = [](void *usr_state, std::size_t id) { end(usr_state, 4, "wait"); };
+auto wait_end = [](void *usr_state, std::size_t id) {
+  end(usr_state, 4, "wait");
+};
 auto memcpy_start = [](void *usr_state) { start(usr_state, 5, "memcpy"); };
 auto memcpy_end = [](void *usr_state) { end(usr_state, 5, "memcpy"); };
 auto memset_start = [](void *usr_state) { start(usr_state, 6, "memset"); };
@@ -110,17 +125,31 @@ auto fill_end = [](void *usr_state) { end(usr_state, 7, "fill"); };
 auto copy_start = [](void *usr_state) { start(usr_state, 8, "copy"); };
 auto copy_end = [](void *usr_state) { end(usr_state, 8, "copy"); };
 
-auto malloc_device_start = [](void *usr_state) { start(usr_state, 10, "malloc_device"); };
-auto malloc_device_end = [](void *usr_state, void *ptr) { end(usr_state, 10, "malloc_device"); };
+auto malloc_device_start = [](void *usr_state) {
+  start(usr_state, 10, "malloc_device");
+};
+auto malloc_device_end = [](void *usr_state, void *ptr) {
+  end(usr_state, 10, "malloc_device");
+};
 
-auto malloc_host_start = [](void *usr_state) { start(usr_state, 11, "malloc_host"); };
-auto malloc_host_end = [](void *usr_state, void *ptr) { end(usr_state, 11, "malloc_host"); };
+auto malloc_host_start = [](void *usr_state) {
+  start(usr_state, 11, "malloc_host");
+};
+auto malloc_host_end = [](void *usr_state, void *ptr) {
+  end(usr_state, 11, "malloc_host");
+};
 
-auto malloc_shared_start = [](void *usr_state) { start(usr_state, 12, "malloc_shared"); };
-auto malloc_shared_end = [](void *usr_state, void *ptr) { end(usr_state, 12, "malloc_shared"); };
+auto malloc_shared_start = [](void *usr_state) {
+  start(usr_state, 12, "malloc_shared");
+};
+auto malloc_shared_end = [](void *usr_state, void *ptr) {
+  end(usr_state, 12, "malloc_shared");
+};
 
 auto free_start = [](void *usr_state) { start(usr_state, 13, "sycl::free"); };
-auto free_end = [](void *usr_state, void *ptr) { end(usr_state, 13, "sycl::free"); };
+auto free_end = [](void *usr_state, void *ptr) {
+  end(usr_state, 13, "sycl::free");
+};
 
 auto finalize = [](void *usr_state) { delete (state_t *)usr_state; };
 
@@ -143,7 +172,8 @@ void init_register() {
   init_memset_end(memset_end);
   init_memcpy_start(memcpy_start);
   init_memcpy_end(memcpy_end);
-  init_wait_start(wait_start);
+  init_wait_event_start(wait_start);
+  init_wait_event_end(wait_start);
   init_wait_event_end(wait_end);
   init_wait_queue_end(wait_end);
   init_single_task_start(single_task_start);
