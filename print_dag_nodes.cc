@@ -30,7 +30,8 @@ struct event_node {
   bool valid = false;
 
   friend bool operator==(const event_node &this_evt, const event_node &other) {
-    return this_evt.id == other.id && this_evt.time_created == other.time_created;
+    return this_evt.id == other.id &&
+           this_evt.time_created == other.time_created;
   }
 
   friend bool operator!=(const event_node &this_evt, const event_node &other) {
@@ -55,11 +56,14 @@ struct queue_t {
   std::unordered_set<std::shared_ptr<event_node>> all_events;
   std::unordered_set<std::shared_ptr<event_node>> incomplete_events;
 
-  friend bool operator==(const queue_t &this_queue, const queue_t &other_queue) {
-    return this_queue.id == other_queue.id && this_queue.time_created == this_queue.time_created;
+  friend bool operator==(const queue_t &this_queue,
+                         const queue_t &other_queue) {
+    return this_queue.id == other_queue.id &&
+           this_queue.time_created == this_queue.time_created;
   }
 
-  friend bool operator!=(const queue_t &this_queue, const queue_t &other_queue) {
+  friend bool operator!=(const queue_t &this_queue,
+                         const queue_t &other_queue) {
     return !(this_queue == other_queue);
   }
 };
@@ -73,9 +77,11 @@ template <> struct std::hash<queue_t> {
 struct dag {
   std::unordered_set<std::shared_ptr<queue_t>>
       all_queues; // All queue that have ever existed in the program
-  std::unordered_map<event_node::hashtype, std::shared_ptr<queue_t>> valid_queues;
+  std::unordered_map<event_node::hashtype, std::shared_ptr<queue_t>>
+      valid_queues;
   std::unordered_set<std::shared_ptr<event_node>> all_events;
-  std::unordered_map<event_node::hashtype, std::shared_ptr<event_node>> valid_events;
+  std::unordered_map<event_node::hashtype, std::shared_ptr<event_node>>
+      valid_events;
   std::unordered_set<std::shared_ptr<event_node>> incompleted_events;
   std::vector<std::shared_ptr<event_node>> current_dependcies;
   timepoint time_created;
@@ -83,7 +89,8 @@ struct dag {
   std::ofstream outfile;
 
   dag(std::string filename)
-      : outfile(filename), time_created(std::chrono::high_resolution_clock::now()) {}
+      : outfile(filename),
+        time_created(std::chrono::high_resolution_clock::now()) {}
 };
 
 std::ostream &operator<<(std::ostream &os, event_node event) {
@@ -93,31 +100,37 @@ std::ostream &operator<<(std::ostream &os, event_node event) {
     os << "{\"name\": \"Event" << event.id << event.time_created.count() << "\""
        << ", \"cat\": " << (event.complete ? "\"Complete\"" : "\"Incomplete\"")
        << ", \"ph\": \"B\","
-       << "\"ts\":" << event.time_created.count() << ", \"pid\":" << event.parent_queue->id
-       << ", \"tid\":" << 1 << "}," << std::endl;
+       << "\"ts\":" << event.time_created.count()
+       << ", \"pid\":" << event.parent_queue->id << ", \"tid\":" << 1 << "},"
+       << std::endl;
 
     os << "{\"name\": \"Event" << event.id << event.time_created.count() << "\""
        << ", \"cat\": " << (event.complete ? "\"Complete\"" : "\"Incomplete\"")
        << ", \"ph\": \"E\","
-       << "\"ts\":" << event.time_submitted->count() << ", \"pid\":" << event.parent_queue->id
-       << ", \"tid\":" << 1 << "}," << std::endl;
+       << "\"ts\":" << event.time_submitted->count()
+       << ", \"pid\":" << event.parent_queue->id << ", \"tid\":" << 1 << "},"
+       << std::endl;
 
     for (auto dep_event : event.dependecy_events) {
 
-      auto first_time_point =
-          (dep_event->time_created.count() + dep_event->time_submitted->count()) / 2;
+      auto first_time_point = (dep_event->time_created.count() +
+                               dep_event->time_submitted->count()) /
+                              2;
 
-      auto second_time_point = (event.time_created.count() + event.time_submitted->count()) / 2;
+      auto second_time_point =
+          (event.time_created.count() + event.time_submitted->count()) / 2;
 
-      os << "{\"name\": \"dependency" << event.id << event.time_created.count() << "_"
-         << dep_event->id << dep_event->time_created.count() << "\","
-         << "\"cat\":\"dependency\", \"id\" : 1, \"ph\":\"s\", \"ts\":" << first_time_point
-         << ", \"pid\":" << dep_event->parent_queue->id << ", \"tid\": 1 " << "}," << std::endl;
+      os << "{\"name\": \"dependency" << event.id << event.time_created.count()
+         << "_" << dep_event->id << dep_event->time_created.count() << "\","
+         << "\"cat\":\"dependency\", \"id\" : 1, \"ph\":\"s\", \"ts\":"
+         << first_time_point << ", \"pid\":" << dep_event->parent_queue->id
+         << ", \"tid\": 1 " << "}," << std::endl;
 
-      os << "{\"name\": \"dependency" << event.id << event.time_created.count() << "_"
-         << dep_event->id << dep_event->time_created.count() << "\","
-         << "\"cat\":\"dependency\", \"id\" : 1,  \"ph\":\"t\", \"ts\":" << second_time_point
-         << ", \"pid\":" << event.parent_queue->id << ", \"tid\": 1 "
+      os << "{\"name\": \"dependency" << event.id << event.time_created.count()
+         << "_" << dep_event->id << dep_event->time_created.count() << "\","
+         << "\"cat\":\"dependency\", \"id\" : 1,  \"ph\":\"t\", \"ts\":"
+         << second_time_point << ", \"pid\":" << event.parent_queue->id
+         << ", \"tid\": 1 "
          << "}," << std::endl;
     }
   }
@@ -133,16 +146,19 @@ void event_node::set_waited_for() {
   if (event_iterator != parent_dag->incompleted_events.end()) {
     parent_dag->incompleted_events.erase(event_iterator);
   } else {
-    std::cout << "Event not in the list of incompleted events of the dag node. (Implementation bug)"
+    std::cout << "Event not in the list of incompleted events of the dag node. "
+                 "(Implementation bug)"
               << std::endl;
   }
 
   if (parent_queue.get() != nullptr) {
-    auto parent_queue_event_iterator = parent_queue->incomplete_events.find(dummy_shared_this);
+    auto parent_queue_event_iterator =
+        parent_queue->incomplete_events.find(dummy_shared_this);
     if (parent_queue_event_iterator != parent_queue->incomplete_events.end()) {
       parent_queue->incomplete_events.erase(parent_queue_event_iterator);
     } else {
-      std::cout << "Event not in the list of incompleted events of the parent queue node. "
+      std::cout << "Event not in the list of incompleted events of the parent "
+                   "queue node. "
                    "(Implementation bug)"
                 << std::endl;
     }
@@ -188,16 +204,17 @@ void wait_function_event(void *usr_state, event_node::hashtype event_id) {
   }
 }
 
-void queue_impl_construction(void *usr_state, event_node::hashtype queue_id, bool is_in_order) {
+void queue_impl_construction(void *usr_state, event_node::hashtype queue_id,
+                             bool is_in_order) {
 
   std::cout << "At construction the queue id is: " << queue_id << std::endl;
 
   auto *dag_ptr = (dag *)usr_state;
-  auto shared_queue =
-      std::make_shared<queue_t>(queue_t{.id = queue_id,
-                                        .valid = true,
-                                        .time_created = std::chrono::high_resolution_clock::now(),
-                                        .is_in_order = is_in_order});
+  auto shared_queue = std::make_shared<queue_t>(
+      queue_t{.id = queue_id,
+              .valid = true,
+              .time_created = std::chrono::high_resolution_clock::now(),
+              .is_in_order = is_in_order});
 
   dag_ptr->all_queues.insert(shared_queue);
   dag_ptr->valid_queues.insert({queue_id, shared_queue});
@@ -217,9 +234,10 @@ void queue_impl_destruction(void *usr_state, event_node::hashtype queue_id) {
 
 void dag_node_constructor(void *usr_state, event_node::hashtype event_hash) {
   auto *dag_ptr = (dag *)usr_state;
-  auto shared_event = std::make_shared<event_node>(event_node{
-      .id = event_hash,
-      .time_created = std::chrono::high_resolution_clock::now() - (dag_ptr->time_created)});
+  auto shared_event = std::make_shared<event_node>(
+      event_node{.id = event_hash,
+                 .time_created = std::chrono::high_resolution_clock::now() -
+                                 (dag_ptr->time_created)});
 
   shared_event->parent_dag = dag_ptr;
   dag_ptr->all_events.insert(shared_event);
@@ -228,7 +246,8 @@ void dag_node_constructor(void *usr_state, event_node::hashtype event_hash) {
     auto previous_holder_of_hash = dag_ptr->valid_events.find(event_hash);
 
     if (previous_holder_of_hash != dag_ptr->valid_events.end()) {
-      std::cout << "New event created before previous event with same hash has been invalidated, "
+      std::cout << "New event created before previous event with same hash has "
+                   "been invalidated, "
                    "looks like a bug"
                    "Discarding the previous one"
                 << std::endl;
@@ -246,7 +265,8 @@ void dag_node_destructor(void *usr_state, event_node::hashtype event_hash) {
     if (invalidated_event != dag_ptr->valid_events.end()) {
       dag_ptr->valid_events.erase(invalidated_event);
     } else {
-      std::cout << "Deleting invalidated event not part of the list" << std::endl;
+      std::cout << "Deleting invalidated event not part of the list"
+                << std::endl;
     }
   }
 }
@@ -265,7 +285,8 @@ void submit_end_function(void *usr_state, event_node::hashtype event_hash,
   event->parent_queue = dag_ptr->valid_queues[queue_id];
 
   if (queue->is_in_order && (queue->most_recent_event)) {
-    // std::cout << "This queue is an in order queue and has a most recent event" << std::endl;
+    // std::cout << "This queue is an in order queue and has a most recent
+    // event" << std::endl;
     dag_ptr->current_dependcies.push_back(queue->most_recent_event);
   }
 
