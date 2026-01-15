@@ -24,8 +24,8 @@ struct state_t {
 
   std::unordered_map<void *, std::string> pointer_map;
 
-  std::array<int, 13> num_starts{};
-  std::array<int, 13> num_ends{};
+  std::array<int, 14> num_starts{};
+  std::array<int, 14> num_ends{};
 
   state_t(std::string outfile_name) : outfile(outfile_name) {
     std::cout << "Tracer state initialized" << std::endl;
@@ -41,6 +41,9 @@ struct state_t {
 // static state_t my_state("outfile.json");
 
 void start(void *state_ptr, int num, std::string type) {
+  
+ // std::cout << "Hello World from the "<<type<< "start function"<< std::endl;
+
   state_t &state = *((state_t *)state_ptr);
   state.num_starts[num]++;
 
@@ -60,8 +63,8 @@ void start(void *state_ptr, int num, std::string type) {
 
   ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
 
-  std::cout << "Hello World from the " << type << "_start function!"
-            << std::endl;
+//  std::cout << "Hello World from the " << type << "_start function!"
+//            << std::endl;
 }
 
 void end(void *state_ptr, int num, std::string type) {
@@ -84,8 +87,8 @@ void end(void *state_ptr, int num, std::string type) {
 
   ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
 
-  // std::cout << "Hello World from the " << type << "_end function!" <<
-  // std::endl;
+ //  std::cout << "Hello World from the " << type << "_end function!" <<
+ //  std::endl;
 }
 
 auto submission_start = [](void *usr_state) {
