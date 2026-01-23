@@ -22,11 +22,11 @@ struct state_t {
 // state_t my_state;
 
 auto malloc_device_start = [](void *usr_state) {
-  std::cout << "Device pointer allocated" << std::endl;
+  // std::cout << "Device pointer allocated" << std::endl;
 };
 auto malloc_device_end = [](void *usr_state, void *ptr) {
   // end(usr_state, 10, "malloc_device");
-  std::cout << "malloc_device end called!" << std::endl;
+  // std::cout << "malloc_device end called!" << std::endl;
   boost::stacktrace::stacktrace st;
 
   std::stringstream ss;
@@ -43,14 +43,14 @@ auto malloc_device_end = [](void *usr_state, void *ptr) {
 auto free_start = [](void *usr_state) {};
 
 auto free_end = [](void *usr_state, void *ptr) {
-  std::cout << "free_end called" << std::endl;
+  // std::cout << "free_end called" << std::endl;
 
   ((state_t *)usr_state)->pointer_map.erase(ptr);
 };
 
 void finalize(void *usr_state) {
 
-  std::cout << "Hello World from inside the finalizer" << std::endl;
+  // std::cout << "Hello World from inside the finalizer" << std::endl;
 
   std::unordered_map<std::string, void *> string_map;
   for (auto i : ((state_t *)usr_state)->pointer_map) {
@@ -66,6 +66,8 @@ void finalize(void *usr_state) {
 
 void init_register() {
   state_t *state = new state_t;
+
+  std::cout << "Memory leak detector activated" << std::endl;
 
   init_states(state);
   init_malloc_device_start(malloc_device_start);

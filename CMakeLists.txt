@@ -56,6 +56,11 @@ add_executable(first_trial first_trial.cc)
 target_link_options(first_trial PRIVATE ${COMP_OPS})
 target_compile_options(first_trial PRIVATE ${LINK_OPS})
 
+add_executable(memory_leaks memory_leaks.cc)
+target_link_options(memory_leaks PRIVATE ${COMP_OPS})
+target_compile_options(memory_leaks PRIVATE ${LINK_OPS})
+
+
 add_executable(interesting_dag interesting_dag.cc)
 target_link_options(interesting_dag PRIVATE ${COMP_OPS})
 target_compile_options(interesting_dag PRIVATE ${LINK_OPS})
