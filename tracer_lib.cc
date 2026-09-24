@@ -52,11 +52,10 @@ void start(void *state_ptr, int num, std::string type) {
   auto duration_micros = std::chrono::duration_cast<std::chrono::microseconds>(
       start_time - state.start_timer);
 
-  std::string id_string;
   std::stringstream sid_string;
   sid_string << std::this_thread::get_id();
 
-  nlohmann::json a{{"ph", "B"},       {"tid", id_string},
+  nlohmann::json a{{"ph", "B"},       {"tid", sid_string.str()},
                    {"pid", "0"},      {"name", type},
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
@@ -76,11 +75,10 @@ void end(void *state_ptr, int num, std::string type) {
   auto duration_micros = std::chrono::duration_cast<std::chrono::microseconds>(
       start_time - state.start_timer);
 
-  std::string id_string;
   std::stringstream sid_string;
   sid_string << std::this_thread::get_id();
 
-  nlohmann::json a{{"ph", "E"},       {"tid", id_string},
+  nlohmann::json a{{"ph", "E"},       {"tid", sid_string.str()},
                    {"pid", "0"},      {"name", type},
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
