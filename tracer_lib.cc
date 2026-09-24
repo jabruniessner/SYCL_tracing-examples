@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
+#include <mutex>
 #include <nlohmann/json.hpp>
 #include <nlohmann/json_fwd.hpp>
 #include <sstream>
@@ -28,12 +29,14 @@ struct state_t {
   std::array<int, 14> num_ends{};
 
   bool wrote_first_event = false;
+  std::mutex write_mutex;
 
   state_t(std::string outfile_name) : outfile(outfile_name) {
     std::cout << "Tracer state initialized" << std::endl;
   }
 
   ~state_t() {
+    std::lock_guard<std::mutex> lock(write_mutex);
     outfile << "]}";
     outfile.close();
     std::cout << "Tracing successfully finished" << std::endl;
@@ -62,11 +65,14 @@ void start(void *state_ptr, int num, std::string type) {
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
-  if (state.wrote_first_event) {
-    state.outfile << "," << std::endl;
+  {
+    std::lock_guard<std::mutex> lock(state.write_mutex);
+    if (state.wrote_first_event) {
+      state.outfile << "," << std::endl;
+    }
+    state.wrote_first_event = true;
+    state.outfile << a.dump();
   }
-  state.wrote_first_event = true;
-  state.outfile << a.dump();
 
 //  std::cout << "Hello World from the " << type << "_start function!"
 //            << std::endl;
@@ -89,11 +95,14 @@ void end(void *state_ptr, int num, std::string type) {
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
-  if (state.wrote_first_event) {
-    state.outfile << "," << std::endl;
+  {
+    std::lock_guard<std::mutex> lock(state.write_mutex);
+    if (state.wrote_first_event) {
+      state.outfile << "," << std::endl;
+    }
+    state.wrote_first_event = true;
+    state.outfile << a.dump();
   }
-  state.wrote_first_event = true;
-  state.outfile << a.dump();
 
  //  std::cout << "Hello World from the " << type << "_end function!" <<
  //  std::endl;
