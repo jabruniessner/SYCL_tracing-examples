@@ -43,8 +43,7 @@ auto free_end = [](void *usr_state, void *ptr) {
   ((state_t *)usr_state)->pointer_map.erase(ptr);
 };
 
-void finalize(void *usr_state) {
-
+auto finalize = [](void *usr_state) {
   // std::cout << "Hello World from inside the finalizer" << std::endl;
 
   std::unordered_map<std::string, void *> string_map;
@@ -57,7 +56,7 @@ void finalize(void *usr_state) {
     std::cout << i.first << std::endl;
     std::cout << "but never freed!" << std::endl;
   }
-}
+};
 
 void init_register() {
   state_t *state = new state_t;

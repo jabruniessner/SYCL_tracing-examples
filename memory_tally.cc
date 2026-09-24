@@ -49,15 +49,13 @@ auto free_end = [](void *usr_state, void *ptr) {
   state->free_count++;
 };
 
-void finalize(void *usr_state) {
+auto finalize = [](void *usr_state) {
   std::cout << "The number of allocations made is: "<< ((state_t*) usr_state)->alloc_count<<
     " The time spent is was "<< ((state_t*) usr_state)->alloc_time.count()<<" seconds";
 
   std::cout << "The number of frees done is: "<< ((state_t*) usr_state)->free_count<<
     " The time spent is was "<< ((state_t*) usr_state)->free_time.count()<<" seconds";
-
-
-}
+};
 
 void init_register() {
   state_t *state = new state_t;
