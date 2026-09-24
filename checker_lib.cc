@@ -1,4 +1,4 @@
-#include "hipSYCL/sycl/tracer_utils.hpp"
+#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <boost/stacktrace.hpp>
 #include <chrono>
 #include <cstddef>
@@ -113,7 +113,8 @@ void init_register() {
   init_memset_end(memset_end);
   init_memcpy_start(memcpy_start);
   init_memcpy_end(memcpy_end);
-  init_wait_start(wait_start);
+  init_wait_event_start(wait_start);
+  init_wait_queue_start(wait_start);
   init_wait_event_end(wait_end);
   init_wait_queue_end(wait_end);
   init_single_task_start(single_task_start);

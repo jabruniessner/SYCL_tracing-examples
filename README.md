@@ -5,7 +5,11 @@ The following examples are implemented.
 
 - `libtracer_lib.so`: A simple time tracer for SYCL API calls. It output is an output file in the Trace Event Format json format, which can be opened and read with perfetto.ui
 - `libmem_leak.so`: A simple memory leak detector, which is capable of finding simple memory leaks for memory allocated with `sycl::malloc_*`-functions. It is based on boosts stacktrace utility
-- `checker_lib`: An empty tracer, to check that the call overhead is negligible
+- `checker_lib`: An empty tracer, to check that the call overhead is negligible. The
+  `checker_lib` CMake target is currently built from `empty_lib.cc`'s no-op
+  implementation to guarantee this. `checker_lib.cc` is a separate, distinct
+  implementation (it logs every call) that is not currently wired into any
+  CMake target.
 - `libprint_dag.so`: A tracer to visualize the task graph in perfetto.ui. The output format is again the Trace Event Format json format. 
 
 The tracer that output their results into a json format also require the [nlohman/json](https://github.com/nlohmann/json) library. 
