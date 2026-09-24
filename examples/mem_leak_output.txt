@@ -1,0 +1,7 @@
+Memory leak detector activated
+Running on device: NVIDIA GeForce RTX 3070
+Running on device with q2: AdaptiveCpp OpenMP host device
+Hello World!
+memory allocated at: 
+main
+but never freed!

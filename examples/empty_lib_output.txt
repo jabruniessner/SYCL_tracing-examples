@@ -1,0 +1,4 @@
+Hello World from inside the empty lib intializer
+Running on device: NVIDIA GeForce RTX 3070
+Running on device with q2: AdaptiveCpp OpenMP host device
+Hello World!

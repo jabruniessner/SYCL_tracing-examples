@@ -1,0 +1,4 @@
+Running on device: NVIDIA GeForce RTX 3070
+Running on device with q2: AdaptiveCpp OpenMP host device
+Hello World!
+The number of allocations made is: 1 The time spent is was 5.0227e-05 secondsThe number of frees done is: 0 The time spent is was 0 seconds
