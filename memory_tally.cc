@@ -1,7 +1,5 @@
 #include "hipSYCL/sycl/tracing/tracer_utils.hpp"
-#include <cstdlib>
 #include <iostream>
-#include <stdlib.h>
 #include <chrono>
 #include <mutex>
 

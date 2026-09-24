@@ -1,14 +1,11 @@
 #include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <chrono>
 #include <cstddef>
-#include <cstdlib>
 #include <fstream>
 #include <iostream>
 #include <mutex>
 #include <nlohmann/json.hpp>
-#include <nlohmann/json_fwd.hpp>
 #include <sstream>
-#include <stdlib.h>
 #include <string>
 #include <thread>
 #include <unordered_map>

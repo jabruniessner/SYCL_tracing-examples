@@ -1,11 +1,6 @@
 #include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <boost/stacktrace.hpp>
-#include <cstdlib>
 #include <iostream>
-#include <nlohmann/json.hpp>
-#include <nlohmann/json_fwd.hpp>
-#include <sstream>
-#include <stdlib.h>
 #include <string>
 #include <unordered_map>
 
