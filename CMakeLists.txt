@@ -49,6 +49,8 @@ endif()
 add_library(empty_lib SHARED empty_lib.cc)
 add_library(checker_lib SHARED empty_lib.cc)
 
+add_library(memory_tally SHARED memory_tally.cc)
+
 
 
 
@@ -59,6 +61,10 @@ target_compile_options(first_trial PRIVATE ${LINK_OPS})
 add_executable(interesting_dag interesting_dag.cc)
 target_link_options(interesting_dag PRIVATE ${COMP_OPS})
 target_compile_options(interesting_dag PRIVATE ${LINK_OPS})
+
+add_executable(interesting_dag_benchmark interesting_dag_benchmark.cc)
+target_link_options(interesting_dag_benchmark PRIVATE ${COMP_OPS})
+target_compile_options(interesting_dag_benchmark PRIVATE ${LINK_OPS})
 
 
 if(USE_BOOST_STACKTRACE)
