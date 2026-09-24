@@ -52,7 +52,7 @@ void finalize(void *usr_state) {
     " The time spent is was "<< ((state_t*) usr_state)->alloc_time.count()<<" seconds";
 
   std::cout << "The number of frees done is: "<< ((state_t*) usr_state)->free_count<<
-    " The time spent is was "<< ((state_t*) usr_state)->alloc_time.count()<<" seconds";
+    " The time spent is was "<< ((state_t*) usr_state)->free_time.count()<<" seconds";
 
 
 }
