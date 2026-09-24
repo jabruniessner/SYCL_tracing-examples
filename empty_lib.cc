@@ -1,4 +1,4 @@
-#include "hipSYCL/sycl/tracer_utils.hpp"
+#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <boost/stacktrace.hpp>
 #include <chrono>
 #include <cstddef>
