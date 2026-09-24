@@ -1,23 +1,51 @@
-# SYCL tracing example
+# SYCL tracing examples
 
-This repository consists of a couple of examples for tracer that can be used in combination with the SYCL tracing as implemented in [AdaptiveCpp](https://github.com/AdaptiveCpp/AdaptiveCpp).
-The following examples are implemented.
+This repository contains a set of example tracer libraries and demo programs
+that exercise the SYCL tracing interface implemented in
+[AdaptiveCpp](https://github.com/AdaptiveCpp/AdaptiveCpp) (tracing branch).
 
-- `libtracer_lib.so`: A simple time tracer for SYCL API calls. It output is an output file in the Trace Event Format json format, which can be opened and read with perfetto.ui
-- `libmem_leak.so`: A simple memory leak detector, which is capable of finding simple memory leaks for memory allocated with `sycl::malloc_*`-functions. It is based on boosts stacktrace utility
-- `checker_lib`: An empty tracer, to check that the call overhead is negligible. The
-  `checker_lib` CMake target is currently built from `empty_lib.cc`'s no-op
-  implementation to guarantee this. `checker_lib.cc` is a separate, distinct
-  implementation (it logs every call) that is not currently wired into any
-  CMake target.
-- `libprint_dag.so`: A tracer to visualize the task graph in perfetto.ui. The output format is again the Trace Event Format json format. 
+## Tracer libraries
 
-The tracer that output their results into a json format also require the [nlohman/json](https://github.com/nlohmann/json) library. 
+- `tracer_lib` (`libtracer_lib.so`): A simple time tracer for SYCL API calls.
+  It outputs a file in the Trace Event Format (JSON), which can be opened and
+  read with [perfetto.ui](https://ui.perfetto.dev).
+- `mem_leak` (`libmem_leak.so`): A simple memory leak detector, capable of
+  finding leaks for memory allocated with `sycl::malloc_*` functions. Based
+  on Boost.Stacktrace. Only built when `USE_BOOST_STACKTRACE=ON`.
+- `print_dag` (`libprint_dag.so`): A tracer that visualizes the task graph in
+  perfetto.ui, again using the Trace Event Format. Only built when
+  `USE_BOOST_STACKTRACE=ON`.
+- `memory_tally` (`libmemory_tally.so`): Tallies the number of
+  `sycl::malloc_*`/`sycl::free` calls made and the time spent in each.
+- `empty_lib` / `checker_lib`: A no-op tracer, to check that the call
+  overhead itself is negligible. The `checker_lib` CMake target is built
+  from `empty_lib.cc`'s no-op implementation to guarantee this.
+  `checker_lib.cc` is a separate, distinct implementation (it logs every
+  call) that is not currently wired into any CMake target.
 
+Tracers that output JSON use the [nlohmann/json](https://github.com/nlohmann/json)
+library, fetched automatically at configure time via CMake's `FetchContent`
+- no manual installation needed.
 
-## Build instrcution
+## Demo programs
 
-Building is quite simple. Just make sure the AdaptiveCpp version that has the tracing capabilities is in you path. Building should then be as easy as doing
+- `first_trial`, `interesting_dag`, `interesting_dag_benchmark`, `benchmarks`:
+  standalone SYCL programs used to exercise the tracer libraries above. Run
+  one with `SYCL_TOOL_LIBRARIES=/path/to/libtracer_lib.so ./first_trial` (or
+  any other tracer library) to trace it.
 
-`cmake $PATH_TO_SRC_DIR && make`
+## Build instructions
 
+Make sure an AdaptiveCpp build with tracing support is on your `PATH`. You
+can use `load_path.sh` for this - set `ADAPTIVECPP_TRACING_INSTALL_DIR` to
+your AdaptiveCpp (tracing branch) install prefix, then `source load_path.sh`.
+
+Building is then:
+
+```sh
+cmake $PATH_TO_SRC_DIR [-DUSE_BOOST_STACKTRACE=ON] && make
+```
+
+`-DUSE_BOOST_STACKTRACE=ON` is only needed if you want to build `mem_leak`
+and `print_dag`, which require Boost.Stacktrace (with the addr2line backend)
+to be available on your system.
