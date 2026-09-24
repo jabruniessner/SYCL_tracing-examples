@@ -29,15 +29,15 @@ auto malloc_device_end = [](void *usr_state, void *ptr) {
   // std::cout << "malloc_device end called!" << std::endl;
   boost::stacktrace::stacktrace st;
 
-  std::stringstream ss;
-  ss << st << std::endl;
-
-  int i = 0;
-  for (std::string line; std::getline(ss, line, '\n');)
-    if (i++ == 5) {
-      ((state_t *)usr_state)->pointer_map[ptr] =
-          line.substr(4, line.size() - 4);
+  for (auto &frame : st) {
+    std::string name = frame.name();
+    if (name.empty() || name.find("tracer_utils::") != std::string::npos ||
+        name.find("hipsycl::sycl::malloc") != std::string::npos) {
+      continue;
     }
+    ((state_t *)usr_state)->pointer_map[ptr] = name;
+    break;
+  }
 };
 
 auto free_start = [](void *usr_state) {};
