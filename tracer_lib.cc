@@ -27,6 +27,8 @@ struct state_t {
   std::array<int, 14> num_starts{};
   std::array<int, 14> num_ends{};
 
+  bool wrote_first_event = false;
+
   state_t(std::string outfile_name) : outfile(outfile_name) {
     std::cout << "Tracer state initialized" << std::endl;
   }
@@ -60,7 +62,11 @@ void start(void *state_ptr, int num, std::string type) {
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
-  ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
+  if (state.wrote_first_event) {
+    state.outfile << "," << std::endl;
+  }
+  state.wrote_first_event = true;
+  state.outfile << a.dump();
 
 //  std::cout << "Hello World from the " << type << "_start function!"
 //            << std::endl;
@@ -83,7 +89,11 @@ void end(void *state_ptr, int num, std::string type) {
                    {"cat", "cpu_op"}, {"ts", duration_micros.count()},
                    {"id", 0}};
 
-  ((state_t *)state_ptr)->outfile << a.dump() << "," << std::endl;
+  if (state.wrote_first_event) {
+    state.outfile << "," << std::endl;
+  }
+  state.wrote_first_event = true;
+  state.outfile << a.dump();
 
  //  std::cout << "Hello World from the " << type << "_end function!" <<
  //  std::endl;
