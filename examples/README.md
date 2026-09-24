@@ -20,8 +20,11 @@ equality.
 - `empty_lib_output.txt` - `libempty_lib.so`. stdout; the no-op tracer
   produces no tracer-specific output of its own, only `first_trial`'s own
   prints and the initializer's one-time "Hello World" message.
-  `libchecker_lib.so` is built from the same source (`empty_lib.cc`) and
-  produces identical output.
+- `checker_lib_output.txt` - `libchecker_lib.so`. stdout; logs every
+  callback it receives (e.g. `"The start submission function was called"`),
+  with no timestamps/addresses involved - fully deterministic given the same
+  demo, so along with `mem_leak_output.txt` this is a good candidate for an
+  exact-match CI check confirming the tracing hooks actually fire.
 
 Regenerate by building with `-DUSE_BOOST_STACKTRACE=ON` against an
 `ACPP_TRACING=ON` AdaptiveCpp install, then running

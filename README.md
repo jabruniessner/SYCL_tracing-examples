@@ -17,11 +17,11 @@ that exercise the SYCL tracing interface implemented in
   `USE_BOOST_STACKTRACE=ON`.
 - `memory_tally` (`libmemory_tally.so`): Tallies the number of
   `sycl::malloc_*`/`sycl::free` calls made and the time spent in each.
-- `empty_lib` / `checker_lib`: A no-op tracer, to check that the call
-  overhead itself is negligible. The `checker_lib` CMake target is built
-  from `empty_lib.cc`'s no-op implementation to guarantee this.
-  `checker_lib.cc` is a separate, distinct implementation (it logs every
-  call) that is not currently wired into any CMake target.
+- `empty_lib` (`libempty_lib.so`): A no-op tracer, to check that the call
+  overhead itself is negligible.
+- `checker_lib` (`libchecker_lib.so`): Like `empty_lib`, but logs every
+  callback it receives (e.g. `"The start submission function was called"`),
+  to confirm the tracing hooks are actually firing.
 
 Tracers that output JSON use the [nlohmann/json](https://github.com/nlohmann/json)
 library, fetched automatically at configure time via CMake's `FetchContent`

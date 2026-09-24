@@ -1,0 +1,36 @@
+Hello World from inside the empty lib intializer
+Running on device: NVIDIA GeForce RTX 3070
+Running on device with q2: AdaptiveCpp OpenMP host device
+The start malloc_shared function was called
+The end malloc_shared function was called
+The start submission function was called
+The start memcpy function was called
+The end memcpy function was called
+The end submission function was called
+The start submission function was called
+The start memset function was called
+The end memset function was called
+The end submission function was called
+The start wait function was called
+The end wait function was called
+The start submission function was called
+The start fill function was called
+The end fill function was called
+The end submission function was called
+The start submission function was called
+The start memcpy function was called
+The end memcpy function was called
+The end submission function was called
+The start submission function was called
+The start single_task function was called
+The end single_task function was called
+The end submission function was called
+The start wait function was called
+The end wait function was called
+The start submission function was called
+The start parallel_for function was called
+The end parallel_for function was called
+The end submission function was called
+The start wait function was called
+The end wait function was called
+Hello World!

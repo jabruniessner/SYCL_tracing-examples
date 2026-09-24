@@ -56,9 +56,7 @@ endif()
 
 
 add_library(empty_lib SHARED empty_lib.cc)
-target_link_libraries(empty_lib PRIVATE nlohmann_json::nlohmann_json)
-add_library(checker_lib SHARED empty_lib.cc)
-target_link_libraries(checker_lib PRIVATE nlohmann_json::nlohmann_json)
+add_library(checker_lib SHARED checker_lib.cc)
 
 add_library(memory_tally SHARED memory_tally.cc)
 
