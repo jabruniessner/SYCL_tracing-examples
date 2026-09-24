@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <chrono>
+#include <mutex>
 
 template<typename T>
 struct TD;
@@ -15,36 +16,39 @@ extern "C" {
 #endif
 
 struct state_t {
-  Time_Point start_time, end_time;
-
   std::size_t alloc_count = 0;
   std::size_t free_count = 0;
-  
+
   Time_Span alloc_time{};
   Time_Span free_time{};
+
+  std::mutex tally_mutex;
 };
 
+thread_local Time_Point malloc_start_time;
+thread_local Time_Point free_start_time;
+
 auto malloc_start = [](void *usr_state) {
-  ((state_t *) usr_state)-> start_time = std::chrono::high_resolution_clock::now();
-  
+  malloc_start_time = std::chrono::high_resolution_clock::now();
 };
 
 auto malloc_end = [](void *usr_state, void *ptr) {
   Time_Point end_time = std::chrono::high_resolution_clock::now();
-  Time_Point start_time = ((state_t*) usr_state)->start_time;
-  ((state_t *) usr_state)-> alloc_time += end_time-start_time;
-  ((state_t *) usr_state)-> alloc_count++;
+  state_t *state = (state_t *)usr_state;
+  std::lock_guard<std::mutex> lock(state->tally_mutex);
+  state->alloc_time += end_time - malloc_start_time;
+  state->alloc_count++;
 };
 
 auto free_start = [](void *usr_state) {
-  ((state_t*) usr_state) -> start_time = std::chrono::high_resolution_clock::now();
+  free_start_time = std::chrono::high_resolution_clock::now();
 };
 auto free_end = [](void *usr_state, void *ptr) {
   Time_Point end_time = std::chrono::high_resolution_clock::now();
-  Time_Point start_time = ((state_t*) usr_state)->start_time;
-  ((state_t *) usr_state)-> free_time += end_time-start_time;
-  ((state_t *) usr_state)-> free_count++;
-
+  state_t *state = (state_t *)usr_state;
+  std::lock_guard<std::mutex> lock(state->tally_mutex);
+  state->free_time += end_time - free_start_time;
+  state->free_count++;
 };
 
 void finalize(void *usr_state) {
