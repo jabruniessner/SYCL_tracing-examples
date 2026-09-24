@@ -19,6 +19,14 @@ endif()
 
 option(USE_BOOST_STACKTRACE "Use Boost Stacktrace for debugging" OFF)
 
+include(FetchContent)
+FetchContent_Declare(
+  json
+  GIT_REPOSITORY https://github.com/nlohmann/json.git
+  GIT_TAG v3.11.3
+)
+FetchContent_MakeAvailable(json)
+
 #if(NOT DEFINED CMAKE_CXX_COMPILER)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUGMODE -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
@@ -31,23 +39,26 @@ set(COMP_OPS "-no-pie")
 
 
 add_library(tracer_lib SHARED tracer_lib.cc)
+target_link_libraries(tracer_lib PRIVATE nlohmann_json::nlohmann_json)
 
 if(USE_BOOST_STACKTRACE)
 add_library(mem_leak SHARED mem_leak_lib.cc)
 target_compile_definitions(mem_leak PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
-target_link_libraries(mem_leak PRIVATE ${DEBUG_LIBS})
+target_link_libraries(mem_leak PRIVATE ${DEBUG_LIBS} nlohmann_json::nlohmann_json)
 endif()
 
 
 if(USE_BOOST_STACKTRACE)
 add_library(print_dag SHARED print_dag_nodes.cc)
 target_compile_definitions(print_dag PRIVATE BOOST_STACKTRACE_USE_ADDR2LINE)
-target_link_libraries(print_dag PRIVATE ${DEBUG_LIBS})
+target_link_libraries(print_dag PRIVATE ${DEBUG_LIBS} nlohmann_json::nlohmann_json)
 endif()
 
 
 add_library(empty_lib SHARED empty_lib.cc)
+target_link_libraries(empty_lib PRIVATE nlohmann_json::nlohmann_json)
 add_library(checker_lib SHARED empty_lib.cc)
+target_link_libraries(checker_lib PRIVATE nlohmann_json::nlohmann_json)
 
 add_library(memory_tally SHARED memory_tally.cc)
 
