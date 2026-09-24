@@ -1,6 +1,12 @@
 # Minimum required version of CMake
 cmake_minimum_required(VERSION 3.10)
 
+# Defaults to acpp on PATH; must run before project(), which locks in
+# CMAKE_CXX_COMPILER (a -D value would otherwise be silently discarded).
+if(NOT DEFINED CMAKE_CXX_COMPILER)
+  set(CMAKE_CXX_COMPILER "acpp")
+endif()
+
 # Set the project name
 project(MultigridSYCL)
 
@@ -27,11 +33,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
-#if(NOT DEFINED CMAKE_CXX_COMPILER)
 set(CMAKE_CXX_FLAGS_DEBUG "-DDEBUGMODE -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-
-set(CMAKE_CXX_COMPILER "acpp")
 
 set(DEBUG_LIBS boost_stacktrace_addr2line dl backtrace)
 set(LINK_OPS "-fno-pie")
