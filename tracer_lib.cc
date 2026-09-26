@@ -1,4 +1,3 @@
-#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <chrono>
 #include <cstddef>
 #include <fstream>
@@ -7,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
+#include <sycl/khr_sycl_tools.hpp>
 #include <thread>
 #include <unordered_map>
 
@@ -43,8 +43,8 @@ struct state_t {
 // static state_t my_state("outfile.json");
 
 void start(void *state_ptr, int num, std::string type) {
-  
- // std::cout << "Hello World from the "<<type<< "start function"<< std::endl;
+
+  // std::cout << "Hello World from the "<<type<< "start function"<< std::endl;
 
   state_t &state = *((state_t *)state_ptr);
   state.num_starts[num]++;
@@ -71,8 +71,8 @@ void start(void *state_ptr, int num, std::string type) {
     state.outfile << a.dump();
   }
 
-//  std::cout << "Hello World from the " << type << "_start function!"
-//            << std::endl;
+  //  std::cout << "Hello World from the " << type << "_start function!"
+  //            << std::endl;
 }
 
 void end(void *state_ptr, int num, std::string type) {
@@ -101,8 +101,8 @@ void end(void *state_ptr, int num, std::string type) {
     state.outfile << a.dump();
   }
 
- //  std::cout << "Hello World from the " << type << "_end function!" <<
- //  std::endl;
+  //  std::cout << "Hello World from the " << type << "_end function!" <<
+  //  std::endl;
 }
 
 auto submission_start = [](void *usr_state) {

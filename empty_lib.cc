@@ -1,8 +1,8 @@
-#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <chrono>
 #include <cstddef>
 #include <iostream>
 #include <string>
+#include <sycl/khr_sycl_tools.hpp>
 
 #ifdef __cplusplus
 extern "C" {

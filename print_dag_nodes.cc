@@ -1,9 +1,9 @@
-#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <ostream>
+#include <sycl/khr_sycl_tools.hpp>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -97,15 +97,13 @@ std::ostream &operator<<(std::ostream &os, event_node event) {
 
     os << "{\"name\": \"Event" << event.id << event.time_created.count() << "\""
        << ", \"cat\": " << (event.complete ? "\"Complete\"" : "\"Incomplete\"")
-       << ", \"ph\": \"B\","
-       << "\"ts\":" << event.time_created.count()
+       << ", \"ph\": \"B\"," << "\"ts\":" << event.time_created.count()
        << ", \"pid\":" << event.parent_queue->id << ", \"tid\":" << 1 << "},"
        << std::endl;
 
     os << "{\"name\": \"Event" << event.id << event.time_created.count() << "\""
        << ", \"cat\": " << (event.complete ? "\"Complete\"" : "\"Incomplete\"")
-       << ", \"ph\": \"E\","
-       << "\"ts\":" << event.time_submitted->count()
+       << ", \"ph\": \"E\"," << "\"ts\":" << event.time_submitted->count()
        << ", \"pid\":" << event.parent_queue->id << ", \"tid\":" << 1 << "},"
        << std::endl;
 
@@ -128,8 +126,7 @@ std::ostream &operator<<(std::ostream &os, event_node event) {
          << "_" << dep_event->id << dep_event->time_created.count() << "\","
          << "\"cat\":\"dependency\", \"id\" : 1,  \"ph\":\"t\", \"ts\":"
          << second_time_point << ", \"pid\":" << event.parent_queue->id
-         << ", \"tid\": 1 "
-         << "}," << std::endl;
+         << ", \"tid\": 1 " << "}," << std::endl;
     }
   }
 

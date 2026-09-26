@@ -1,6 +1,3 @@
-#include "hipSYCL/sycl/device_selector.hpp"
-#include "hipSYCL/sycl/queue.hpp"
-#include "hipSYCL/sycl/usm.hpp"
 #include <chrono>
 #include <iostream>
 #include <sycl/sycl.hpp>

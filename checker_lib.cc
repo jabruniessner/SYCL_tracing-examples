@@ -1,4 +1,4 @@
-#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
+#include "<sycl/khr_sycl_tools.hpp>"
 #include <chrono>
 #include <cstddef>
 #include <iostream>

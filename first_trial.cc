@@ -1,5 +1,3 @@
-#include "hipSYCL/sycl/queue.hpp"
-#include "hipSYCL/sycl/usm.hpp"
 #include <iostream>
 #include <sycl/sycl.hpp>
 
@@ -11,17 +9,20 @@
 int main() {
 
   sycl::gpu_selector selector;
-  sycl::queue q{selector, sycl::property_list{sycl::property::queue::in_order{}}};
+  sycl::queue q{selector,
+                sycl::property_list{sycl::property::queue::in_order{}}};
 
   sycl::host_selector selector2;
-  sycl::queue q2{selector2, sycl::property_list{sycl::property::queue::in_order{}}};
+  sycl::queue q2{selector2,
+                 sycl::property_list{sycl::property::queue::in_order{}}};
 
   auto dev = q.get_device();
   auto dev2 = q2.get_device();
 
-  std::cout << "Running on device: " << dev.get_info<sycl::info::device::name>() << std::endl;
-  std::cout << "Running on device with q2: " << dev2.get_info<sycl::info::device::name>()
+  std::cout << "Running on device: " << dev.get_info<sycl::info::device::name>()
             << std::endl;
+  std::cout << "Running on device with q2: "
+            << dev2.get_info<sycl::info::device::name>() << std::endl;
 
   // Tracer_utils::initialize_tracer(cool_tracer);
 
@@ -30,7 +31,7 @@ int main() {
     numbers[i - 1] = i;
 
   int *numbers_device = sycl::malloc_shared<int>(100, q);
- // q.wait();
+  // q.wait();
 
   q.memcpy(numbers_device, numbers.data(), sizeof(int) * 100);
   q.memset(numbers_device, 0, sizeof(int) * 100);
@@ -55,7 +56,9 @@ int main() {
 
   // q.wait();
 
-  q.parallel_for(sycl::range<1>(10), [=](sycl::id<1> I) { const int i = 0; }).wait();
+  q.parallel_for(sycl::range<1>(10), [=](sycl::id<1> I) {
+     const int i = 0;
+   }).wait();
 
   std::cout << "Hello World!" << std::endl;
 }

@@ -1,7 +1,7 @@
-#include "hipSYCL/sycl/tracing/tracer_utils.hpp"
 #include <boost/stacktrace.hpp>
 #include <iostream>
 #include <string>
+#include <sycl/khr_sycl_tools.hpp>
 #include <unordered_map>
 
 #ifdef __cplusplus
