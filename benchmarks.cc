@@ -1,5 +1,3 @@
-#include "hipSYCL/sycl/queue.hpp"
-#include "hipSYCL/sycl/usm.hpp"
 #include <chrono>
 #include <iostream>
 #include <sycl/sycl.hpp>
