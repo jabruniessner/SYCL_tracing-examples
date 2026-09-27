@@ -1,7 +1,7 @@
 #include <boost/stacktrace.hpp>
 #include <iostream>
 #include <string>
-#include <sycl/khr_sycl_tools.hpp>
+#include <sycl/khr_sycl_tools.h>
 #include <unordered_map>
 
 #ifdef __cplusplus
