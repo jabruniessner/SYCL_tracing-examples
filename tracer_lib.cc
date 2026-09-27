@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
-#include <sycl/khr_sycl_tools.hpp>
+#include <sycl/khr_sycl_tools.h>
 #include <thread>
 #include <unordered_map>
 
