@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 #include <mutex>
-#include <sycl/khr_sycl_tools.hpp>
+#include <sycl/khr_sycl_tools.h>
 
 template <typename T> struct TD;
 
