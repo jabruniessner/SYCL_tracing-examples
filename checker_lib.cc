@@ -1,4 +1,4 @@
-#include "<sycl/khr_sycl_tools.hpp>"
+#include "<sycl/khr_sycl_tools.h>"
 #include <chrono>
 #include <cstddef>
 #include <iostream>
