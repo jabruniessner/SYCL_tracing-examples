@@ -3,7 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <ostream>
-#include <sycl/khr_sycl_tools.hpp>
+#include <sycl/khr_sycl_tools.h>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
