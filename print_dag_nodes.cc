@@ -46,7 +46,7 @@ template <> struct std::hash<event_node> {
 };
 
 struct queue_t {
-  hashtype id;
+  event_node::hashtype id;
   bool valid = false;
   timepoint time_created;
   std::shared_ptr<event_node> most_recent_event = nullptr;
