@@ -2,7 +2,7 @@
 #include <cstddef>
 #include <iostream>
 #include <string>
-#include <sycl/khr_sycl_tools.hpp>
+#include <sycl/khr_sycl_tools.h>
 
 #ifdef __cplusplus
 extern "C" {
